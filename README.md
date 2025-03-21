@@ -15,9 +15,9 @@ Viewing Arch Diagrams
 
 ## Issue Tracker & Resolutions
 
-- Docker SQL Server container failed � fixed by enabling file sharing and adjusting volume mounts  
-- EF Core connection string not initialized � resolved by adding to `appsettings.json` and configuring `DbContext` in `Program.cs`  
-- Route constraint `apiVersion` not found � solved by registering API versioning and explorer in `Program.cs`
-- Exposed exception messages � fixed by returning generic 500 and logging details to console 
-- Long uri path for getting next state - Still working on implementation
+- Docker SQL Server container failed => fixed by enabling file sharing and adjusting volume mounts  
+- EF Core connection string not initialized => resolved by adding to `appsettings.json` and configuring `DbContext` in `Program.cs`  
+- Route constraint `apiVersion` not found => solved by registering API versioning and explorer in `Program.cs`
+- Exposed exception messages => fixed by returning generic 500 and logging details to console 
+- Long uri path for getting next state => Still working on implementation
 
