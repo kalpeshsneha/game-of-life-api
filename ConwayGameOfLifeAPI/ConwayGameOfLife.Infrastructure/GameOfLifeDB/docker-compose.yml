@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_container
+    restart: always
+    environment:
+      SA_PASSWORD: "AddYourPassword"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      - ./sql-scripts:/scripts # Mounts local SQL scripts
+
+volumes:
+  sqlserver_data:
