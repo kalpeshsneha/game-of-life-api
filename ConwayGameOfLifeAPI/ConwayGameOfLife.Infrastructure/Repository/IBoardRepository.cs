@@ -9,7 +9,8 @@ namespace ConwayGameOfLife.Infrastructure.Repository
 {
 	public interface IBoardRepository
 	{
-		Task<Guid> AddBoardAsync(Board board);
-		Task<Board> GetBoardByIdAsync(Guid id);
+		Task<Board> GetBoardAsync(Guid id);
+		Task AddBoardAsync(Board board);
+		Task SaveChangesAsync();
 	}
 }

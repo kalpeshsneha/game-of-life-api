@@ -20,6 +20,7 @@ builder.Services.AddDbContext<GameOfLifeDBContext>(options => options.UseSqlServ
 
 // Core Service Registration
 builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IErrorService, ErrorService>();
 
 // Infra Repository Registration 
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();

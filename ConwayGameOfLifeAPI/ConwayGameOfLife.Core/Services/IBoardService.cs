@@ -1,4 +1,5 @@
-﻿using ConwayGameOfLife.Infrastructure.Models;
+﻿using ConwayGameOfLife.Core.DTO;
+using ConwayGameOfLife.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,10 @@ namespace ConwayGameOfLife.Core.Services
 {
 	public interface IBoardService
 	{
-		Task<Guid> AddBoardAsync(Board board);
-		Task<Board> GetBoardByIdAsync(Guid id);
+		Task<Guid> CreateBoardAsync(BoardDto dto);
+		Task<BoardDto> GetNextStateAsync(Guid boardId);
+		Task<BoardDto> GetXStatesAwayAsync(Guid boardId, int steps);
+		Task<BoardDto> GetFinalStateAsync(Guid boardId, int maxNoOfAttempts);
+
 	}
 }

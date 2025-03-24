@@ -8,7 +8,7 @@
 CREATE DATABASE GameOfLifeDB;
 GO
 
-CREATE LOGIN gameoflifesvc WITH PASSWORD = 'AddYourPassword';
+CREATE LOGIN gameoflifesvc WITH PASSWORD = 'GameOfLife@API123';
 GO
 CREATE USER gameoflifesvc FOR LOGIN gameoflifesvc;
 GO

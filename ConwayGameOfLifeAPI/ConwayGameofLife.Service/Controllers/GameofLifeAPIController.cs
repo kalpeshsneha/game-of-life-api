@@ -1,7 +1,10 @@
-﻿using ConwayGameOfLife.Core.Services;
+﻿using ConwayGameOfLife.Core.DTO;
+using ConwayGameOfLife.Core.DTO.Helper;
+using ConwayGameOfLife.Core.Services;
 using ConwayGameOfLife.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net;
 
 namespace ConwayGameofLife.Service.Controllers
 {
@@ -11,25 +14,29 @@ namespace ConwayGameofLife.Service.Controllers
 	public class GameofLifeAPIController : ControllerBase
 	{
 		private readonly IBoardService _boardService;
+		private readonly IErrorService _errorService;
 
-		public GameofLifeAPIController(IBoardService boardService)
+		public GameofLifeAPIController(IBoardService boardService, IErrorService errorService)
 		{
 			_boardService = boardService;
+			_errorService = errorService;
 		}
 
-
+		#region Controller Public Methods
+		/// <summary>
+		/// Create a new board state
+		/// </summary>
+		/// <param name="board">board state object</param>
+		/// <returns>id of board state</returns>
 		[HttpPost("state/create")]
-		public async Task<IActionResult> CreateAndUploadBoardState([FromBody] Board board)
+		public async Task<IActionResult> CreateBoardState([FromBody] BoardDto board)
 		{
-
 			try
 			{
-				if (board == null || board.Cells == null || board.Cells.Count == 0)
-				{
-					return BadRequest("Board and Cells cannot be null or empty");
-				}
+					if (board == null || board.Cells == null || board.Cells.Count == 0)
+						return BadRequest(_errorService.CreateError((int)HttpStatusCode.BadRequest, ErrorsConstants.NullBoardStateMgs));
 
-				var boardId = await _boardService.AddBoardAsync(board);
+					var boardId = await _boardService.CreateBoardAsync(board);
 
 				Console.WriteLine("CreateAndUploadBoardState: Board Created Successfully BoardId {boardId}");
 				return Ok(boardId);
@@ -37,28 +44,79 @@ namespace ConwayGameofLife.Service.Controllers
 			catch (Exception ex)
 			{
 				Console.WriteLine("CreateAndUploadBoardState: Exception {ex.Message}");
-				return StatusCode(500, "Internal Server Error: An unexpected error occurred. Please try again later");
+				return BadRequest(_errorService.CreateError((int)HttpStatusCode.InternalServerError,ErrorsConstants.InternalServerErrorMgs));
 			}
 		}
-
-		[HttpGet("/state/next/{id}")]
+		/// <summary>
+		/// gets the next board state
+		/// </summary>
+		/// <param name="id">id of the existing board in database</param>
+		/// <returns>next board state</returns>
+		[HttpGet("nextstate/{id:guid}")]
 		public async Task<IActionResult> GetNextBoardState(Guid id)
 		{
 			try
 			{
-				if (await _boardService.GetBoardByIdAsync(id) is not Board board)
-				{
-					return NotFound($"Board with Id {id} not found");
-				}
-
-				return Ok(null);
+				var nextState = await _boardService.GetNextStateAsync(id);
+				if (nextState == null)
+					return NotFound(_errorService.CreateError((int)HttpStatusCode.NotFound, ErrorsConstants.BoardNotFoundMgs));
 				
+				return Ok(nextState);
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"GetNextBoardState: Exception {ex.Message}");
-				return StatusCode(500, "Internal Server Error: An unexpected error occurred. Please try again later");
+				Console.WriteLine("GetNextBoardState: Exception {ex.Message}");
+				return BadRequest(_errorService.CreateError((int) HttpStatusCode.InternalServerError, ErrorsConstants.InternalServerErrorMgs));
+
 			}
+			
 		}
+
+		/// <summary>
+		/// get the board state after x steps
+		/// </summary>
+		/// <param name="id">id of te existing board in database</param>
+		/// <param name="noofSteps">no of steps</param>
+		/// <returns>future board state</returns>
+		[HttpGet("statesaway/{id:guid}/{noofsteps:int}")]
+		public async Task<IActionResult> GetXStatesAway(Guid id, int noofsteps)
+		{
+			try
+			{
+				var nextState = await _boardService.GetXStatesAwayAsync(id, noofsteps);
+				if (nextState == null)
+					return NotFound(_errorService.CreateError((int)HttpStatusCode.NotFound, ErrorsConstants.BoardNotFoundMgs));
+				
+				return Ok(nextState);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("GetXStatesAway: Exception {ex.Message}");
+				return BadRequest(_errorService.CreateError((int)HttpStatusCode.InternalServerError, ErrorsConstants.InternalServerErrorMgs));
+
+			}
+
+		}
+
+		[HttpGet("finalstate/{id:guid}/{noofattempts:int}")]
+		public async Task<IActionResult> GetFinalState(Guid id, int noofattempts)
+		{
+			try
+			{
+				var nextState = await _boardService.GetFinalStateAsync(id, noofattempts);
+				if (nextState == null)
+					return NotFound(_errorService.CreateError((int)HttpStatusCode.NotFound, ErrorsConstants.BoardNotFoundMgs));
+
+				return Ok(nextState);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("GetFinalState: Exception {ex.Message}");
+				return BadRequest(_errorService.CreateError((int)HttpStatusCode.InternalServerError, ErrorsConstants.InternalServerErrorMgs));
+
+			}
+
+		}
+		#endregion
 	}
 }

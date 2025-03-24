@@ -17,30 +17,28 @@ namespace ConwayGameOfLife.Infrastructure.Repository
 			_context = context;
 		}
 
-		public async Task<Guid> AddBoardAsync(Board board)
-		{
-			using (var transaction = await _context.Database.BeginTransactionAsync())
-			{
-				try
-				{
-					_context.Boards.Add(board);
-					await _context.SaveChangesAsync();
-
-					await transaction.CommitAsync();
-					return board.Id;
-				}
-				catch (Exception ex)
-				{
-					await transaction.RollbackAsync();
-					Console.WriteLine("AddBoardAsync: An error occurred - {ex.Message}");
-					throw;
-				}
-			}
-		}
-
-		public async Task<Board> GetBoardByIdAsync(Guid id)
+		#region Public Methods
+		public async Task<Board> GetBoardAsync(Guid id)
 		{
 			return await _context.Boards.Include(b => b.Cells).FirstOrDefaultAsync(b => b.Id == id);
 		}
+
+		public async Task AddBoardAsync(Board board)
+		{
+			try
+			{
+				await _context.Boards.AddAsync(board);
+			}
+			catch(Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public async Task SaveChangesAsync()
+		{
+			await _context.SaveChangesAsync();
+		}
+		#endregion
 	}
 }
