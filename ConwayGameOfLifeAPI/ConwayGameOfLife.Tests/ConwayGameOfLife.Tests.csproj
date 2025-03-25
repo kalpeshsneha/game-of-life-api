@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConwayGameofLife.API\ConwayGameofLife.API.csproj" />
     <ProjectReference Include="..\ConwayGameOfLife.Core\ConwayGameOfLife.Core.csproj" />
     <ProjectReference Include="..\ConwayGameOfLife.Infrastructure\ConwayGameOfLife.Infrastructure.csproj" />
     <ProjectReference Include="..\ConwayGameofLife.Service\ConwayGameofLife.API.csproj" />

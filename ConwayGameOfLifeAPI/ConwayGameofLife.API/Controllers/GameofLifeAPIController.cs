@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 
-namespace ConwayGameofLife.Service.Controllers
+namespace ConwayGameofLife.API.Controllers
 {
 	[ApiController]
 	[ApiVersion("1")]

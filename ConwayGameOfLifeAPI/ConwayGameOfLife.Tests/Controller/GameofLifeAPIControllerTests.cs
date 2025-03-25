@@ -1,5 +1,4 @@
 ﻿using ConwayGameOfLife.Core.Services;
-using ConwayGameofLife.Service.Controllers;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using ConwayGameOfLife.Core.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using ConwayGameOfLife.Core.DTO.Helper;
+using ConwayGameofLife.API.Controllers;
 
 namespace ConwayGameOfLife.Tests.Controller
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConwayGameofLife.Service.Controllers
+namespace ConwayGameofLife.API.Controllers
 {
 	// This controller handles exceptions and errors in the application.
 	[Route("api/[controller]")]
