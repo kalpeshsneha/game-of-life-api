@@ -1,0 +1,16 @@
+@startuml
+title Conway's Game of Life - High-Level Architecture
+
+actor Client
+
+rectangle "Controller" as Controller
+rectangle "Service" as Service
+rectangle "Repository" as Repository
+database "SQL Server" as DB
+
+Client --> Controller : HTTP Request
+Controller --> Service : Calls service
+Service --> Repository : Access data
+Repository --> DB : EF Core queries
+
+@enduml

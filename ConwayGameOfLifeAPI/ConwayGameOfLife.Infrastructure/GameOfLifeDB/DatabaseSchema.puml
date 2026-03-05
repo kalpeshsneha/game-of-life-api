@@ -1,0 +1,25 @@
+@startuml
+title Database Schema 
+
+entity "Boards" {
+    * Id : UNIQUEIDENTIFIER (PK)
+    --
+    Name : NVARCHAR(255)
+    CreatedAt : DATETIME (UTC)
+    LastModifiedTime : DATETIME (UTC)
+}
+
+entity "Cells" {
+    * Id : UNIQUEIDENTIFIER (PK)
+    --
+    BoardId : UNIQUEIDENTIFIER (FK)
+    RowPosition : INT
+    ColumnPosition : INT
+    IsAlive : BIT
+    CreatedAt : DATETIME (UTC)
+    LastModifiedTime : DATETIME (UTC)
+}
+
+"Boards" ||--o{ "Cells" : contains
+
+@enduml
